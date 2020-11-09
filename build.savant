@@ -188,6 +188,11 @@ target(name: "build-ruby", description: "Build the Ruby Client Library") {
       buildClient(template: "src/main/client/ruby.client.ftl", outputFile: "../fusionauth-ruby-client/lib/fusionauth/fusionauth_client.rb")
 }
 
+target(name: "build-elixir", description: "Build the Elixir Client Library") {
+  clientLibrary.
+      buildClient(template: "src/main/client/elixir.client.ftl", outputFile: "../fusionauth-elixir-client/lib/fusionauth/fusionauth_client.ex")
+}
+
 target(name: "build-swift", description: "Build the Swift Client Library") {
   clientLibrary.
       buildClient(template: "src/main/client/swift.client.ftl", outputFile: "../fusionauth-swift-client/fusionauth/FusionAuthClient.swift")
@@ -222,13 +227,14 @@ target(name: "build-all", description: "Builds all client libraries", dependsOn:
                                                                                   "build-javascript",
                                                                                   "build-python",
                                                                                   "build-ruby",
+                                                                                  "build-elixir",
                                                                                   "build-dart"]) {
 }
 
 // Still testing this to see if it will work with stdout and prompts, etc which are required for dart, and python. Perhaps we can configure all of this to
 // skip all requests for input or confirmations.
 target(name: "publish-all", description: "Publish all client libraries") {
-  ["dart", "java", "netcore", "node", "php", "python", "ruby", "typescript"].each { client ->
+  ["dart", "java", "netcore", "node", "php", "python", "ruby", "elixir", "typescript"].each { client ->
     ProcessBuilder pb = new ProcessBuilder(
         "sb", "publish")
         .inheritIO()
