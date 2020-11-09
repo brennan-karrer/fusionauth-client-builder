@@ -20,8 +20,10 @@ require 'ostruct'
 
 defmodule FusionAuthClient do
   @moduledoc """
-  Testing ...
+  This module is the the Elixir client library for the FusionAuth CIAM Platform {https://fusionauth.io}.
   """
+
+  alias FusionAuthUtilities, as: Utilities
 
 [#list apis as api]
   @doc """
@@ -69,11 +71,11 @@ defmodule FusionAuthClient do
       [#elseif param.type == "urlParameter"]
     |> url_parameter("${param.parameterName}", ${(param.constant?? && param.constant)?then(param.value, camel_to_underscores(param.name?replace("end", "_end")))})
       [#elseif param.type == "body"]
-    |> body_handler(FusionAuth::JSONBodyHandler.new(${camel_to_underscores(param.name)}))
+    |> body_handler(Utilities.new_body_handler(${camel_to_underscores(param.name)}))
       [/#if]
     [/#list]
       [#if formPost]
-    |> body_handler(FusionAuth::FormDataBodyHandler.new(body))
+    |> body_handler(Utilities.new_body_handler(body))
       [/#if]
     |> ${api.method}()
     |> go()
